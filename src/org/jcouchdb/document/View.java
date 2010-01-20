@@ -1,8 +1,9 @@
 package org.jcouchdb.document;
 
 import org.jcouchdb.util.Util;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.svenson.JSONProperty;
 
 
 /**
@@ -11,7 +12,7 @@ import org.slf4j.Logger;
  * @author shelmberger
  *
  */
-public class View
+public class View extends BaseDocument
 {
     private static Logger log = LoggerFactory.getLogger(View.class);
 
@@ -33,6 +34,7 @@ public class View
         setReduce(reduceFn);
     }
 
+    @JSONProperty
     public String getMap()
     {
         return map;
@@ -50,6 +52,7 @@ public class View
         }
     }
 
+    @JSONProperty(ignoreIfNull=true)
     public String getReduce()
     {
         return reduce;
