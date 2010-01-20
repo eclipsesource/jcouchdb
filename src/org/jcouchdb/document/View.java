@@ -12,7 +12,7 @@ import org.svenson.JSONProperty;
  * @author shelmberger
  *
  */
-public class View extends BaseDocument
+public class View
 {
     private static Logger log = LoggerFactory.getLogger(View.class);
 
