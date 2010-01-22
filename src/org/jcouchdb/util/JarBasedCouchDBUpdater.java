@@ -76,7 +76,7 @@ extends AbstractCouchDBUpdater
                     log.debug("found map or reduce function: {}", name);
                     
                     String content = IOUtils.toString(jarFile.getInputStream(entry));
-                    createViewFor(name.substring(pathInsideJar.length()), content, designDocuments);
+                    createViewFor(name.substring(pathInsideJar.length()), content, designDocuments, "/");
                 }
             }
         }

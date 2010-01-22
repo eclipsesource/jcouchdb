@@ -90,11 +90,11 @@ public abstract class AbstractCouchDBUpdater
         return designDocuments;
     }
 
-    protected void createViewFor(String path, String content, Map<String,DesignDocument> designDocuments)
+    protected void createViewFor(String path, String content, Map<String,DesignDocument> designDocuments, String separator)
     {
         boolean isMapFunction = path.endsWith(MAP_SUFFIX);
         boolean isReduceFunction = path.endsWith(REDUCE_SUFFIX);
-        List<String> parts = StringUtil.split(path, File.separator);
+        List<String> parts = StringUtil.split(path, separator);
 
         Assert.isTrue(parts.size() > 1, "invalid dir structure");
 

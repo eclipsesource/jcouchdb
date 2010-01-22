@@ -51,7 +51,7 @@ public class CouchDBUpdater extends AbstractCouchDBUpdater
                     continue;
                 }
 
-                createViewFor(path, content, designDocuments);
+                createViewFor(path, content, designDocuments, File.separator);
             }
         }
 
