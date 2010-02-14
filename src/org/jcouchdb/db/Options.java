@@ -39,7 +39,7 @@ import org.svenson.JSONParser;
  * @see Database#getDocument(Class, String)
  * @see Database#queryView(String, Class, Options, JSONParser)
  * @see Database#queryAdHocView(Class, String, Options, JSONParser)
- * @author shelmberger
+ * @author fforw at gmx dot de
  *
  */
 public class Options

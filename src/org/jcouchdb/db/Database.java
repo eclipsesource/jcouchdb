@@ -33,7 +33,7 @@ import org.svenson.JSONParser;
 /**
  * Contains the main interface of working with a couchdb database
  *
- * @author shelmberger
+ * @author fforw at gmx dot de
  *
  */
 public class Database

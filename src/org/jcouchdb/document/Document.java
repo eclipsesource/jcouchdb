@@ -11,7 +11,7 @@ import org.svenson.JSONTypeHint;
  * to be able to be fed both "_id" and "_rev" properties -- but without
  * those properties you cannot really work with couchdb anyway.
  *
- * @author shelmberger
+ * @author fforw at gmx dot de
  *
  */
 public interface Document

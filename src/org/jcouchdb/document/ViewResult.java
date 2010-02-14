@@ -8,7 +8,7 @@ import org.svenson.JSONTypeHint;
 /**
  * Encapsulates the result of a view query.
  *
- * @author shelmberger
+ * @author fforw at gmx dot de
  *
  * @param <V>   type of the view result rows.
  */

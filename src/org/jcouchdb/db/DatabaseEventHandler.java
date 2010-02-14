@@ -2,7 +2,7 @@ package org.jcouchdb.db;
 
 /**
  * Allows java-side interception of couchdb operations on documents
- * @author shelmberger
+ * @author fforw at gmx dot de
  *
  */
 public interface DatabaseEventHandler

@@ -45,7 +45,7 @@ import org.svenson.JSONParser;
 /**
  * Runs tests against a real couchdb database running on localhost
  *
- * @author shelmberger
+ * @author fforw at gmx dot de
  */
 public class LocalDatabaseTestCase
 {

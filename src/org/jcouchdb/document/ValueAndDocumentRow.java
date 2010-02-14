@@ -5,7 +5,7 @@ import org.svenson.JSONProperty;
 /**
  * One row of a view result containing a view value and a document.
  *
- * @author shelmberger
+ * @author fforw at gmx dot de
  *
  * @param <V> type of the contained value
  * @param <D> type of the contained document

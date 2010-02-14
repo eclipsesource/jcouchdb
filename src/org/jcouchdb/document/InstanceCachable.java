@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * Marks a class as aggressively instance-cacheable meaning that it's ok for
  * caches to return the same instance for a cached couchdb URI.
  *
- * @author shelmberger
+ * @author fforw at gmx dot de
  */
 
 @Retention(RetentionPolicy.RUNTIME)

@@ -5,7 +5,7 @@ import org.svenson.JSONProperty;
 /**
  * Provides information about created or updated documents.
  *
- * @author shelmberger
+ * @author fforw at gmx dot de
  *
  */
 public class DocumentInfo

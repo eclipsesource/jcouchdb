@@ -9,7 +9,7 @@ import org.svenson.JSONProperty;
 /**
  * Encapsulates a view inside a {@link DesignDocument}.
  *
- * @author shelmberger
+ * @author fforw at gmx dot de
  *
  */
 public class View

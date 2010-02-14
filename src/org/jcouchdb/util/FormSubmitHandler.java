@@ -13,7 +13,7 @@ import org.svenson.JSON;
 /**
  * A simple HTTP form submit to couchdb bridge 
  * 
- * @author shelmberger
+ * @author fforw at gmx dot de
  *
  */
 public class FormSubmitHandler

@@ -10,7 +10,7 @@ import org.svenson.JSONProperty;
  * Basically a copy of {@link BaseDocument} with the point being that it is in fact
  * not BaseDocument. Used to test non-document access.
  *
- * @author shelmberger
+ * @author fforw at gmx dot de
  *
  */
 public class NotADocument extends AbstractDynamicProperties

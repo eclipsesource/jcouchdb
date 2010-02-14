@@ -5,7 +5,7 @@ import org.jcouchdb.db.Response;
 /**
  * Is thrown when an update conflict happens
  *
- * @author shelmberger
+ * @author fforw at gmx dot de
  *
  */
 public class UpdateConflictException extends DataAccessException

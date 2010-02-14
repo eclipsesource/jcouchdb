@@ -10,7 +10,7 @@ import org.apache.http.HttpException;
  * Used to wrap checked exceptions in {@link CouchDBException}s throughout the project.
  * Every checked type wrapped has its own static wrapper method.
  *
- * @author shelmberger
+ * @author fforw at gmx dot de
  */
 public class ExceptionWrapper
 {

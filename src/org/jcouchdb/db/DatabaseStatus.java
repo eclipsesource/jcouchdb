@@ -6,7 +6,7 @@ import org.svenson.JSONProperty;
 /**
  * Provides information about the current couchdb server status
  *
- * @author shelmberger
+ * @author fforw at gmx dot de
  *
  */
 public class DatabaseStatus

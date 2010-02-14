@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * Encapsulates a couchdb server response with error code and received body.
  *
- * @author shelmberger
+ * @author fforw at gmx dot de
  */
 public class Response
 {

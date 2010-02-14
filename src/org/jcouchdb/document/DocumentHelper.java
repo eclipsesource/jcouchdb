@@ -12,7 +12,7 @@ import org.svenson.JSONProperty;
  * Helper class that reflectively gets and sets the "_id" and "_rev" properties of documents,
  * obeying {@link JSONProperty} annotations.
  *
- * @author shelmberger
+ * @author fforw at gmx dot de
  *
  */
 public class DocumentHelper

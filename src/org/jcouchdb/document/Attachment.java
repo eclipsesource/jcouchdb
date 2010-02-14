@@ -12,7 +12,7 @@ import org.svenson.JSONProperty;
  *
  * This limitation has its origin in the way couchdb works and is deliberately kept that way to not introduce additional queries.
  * 
- * @author shelmberger
+ * @author fforw at gmx dot de
  *
  */
 public class Attachment

@@ -45,7 +45,7 @@ import org.svenson.JSON;
 /**
  * Default implementation of the {@link Server} interface.
  * 
- * @author shelmberger
+ * @author fforw at gmx dot de
  */
 public class ServerImpl
     implements Server

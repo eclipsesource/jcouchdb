@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.commons.io.IOUtils;
 import org.jcouchdb.document.ChangeListener;
 import org.jcouchdb.document.ChangeNotification;
+import org.jcouchdb.document.HeartBeatListener;
 import org.jcouchdb.util.ExceptionWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -143,6 +144,10 @@ class ContinuousChangesDriver
         else
         {
             log.debug("received heartbeat");
+            if (listener instanceof HeartBeatListener)
+            {
+                ((HeartBeatListener)listener).heartbeat();
+            }
         }
     }
 }

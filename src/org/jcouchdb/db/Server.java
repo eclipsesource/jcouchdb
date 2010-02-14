@@ -11,7 +11,7 @@ import org.jcouchdb.exception.CouchDBException;
 /**
  * Represents a couchdb server
  *
- * @author shelmberger
+ * @author fforw at gmx dot de
  */
 public interface Server
 {

@@ -11,7 +11,7 @@ import org.svenson.JSONTypeHint;
 /**
  * Convenience base class for documents. Not abstract so it can be used fully dynamically.
  *
- * @author shelmberger
+ * @author fforw at gmx dot de
  *
  */
 public class BaseDocument

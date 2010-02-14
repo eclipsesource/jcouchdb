@@ -5,7 +5,7 @@ import org.jcouchdb.db.Response;
 /**
  * Is thrown when a document is not found.
  *
- * @author shelmberger
+ * @author fforw at gmx dot de
  *
  */
 public class NotFoundException
