@@ -32,11 +32,11 @@ public class ContinuousChangesDriverTestCase
     }
 
 
-//    @AfterClass
-//    public static void deleteDB()
-//    {
-//        db.getServer().deleteDatabase(db.getName());
-//    }
+    @AfterClass
+    public static void deleteDB()
+    {
+        db.getServer().deleteDatabase(db.getName());
+    }
 
 
     @Test

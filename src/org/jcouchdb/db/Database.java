@@ -201,7 +201,7 @@ public class Database
         Response resp = null;
         try
         {
-            resp = server.get("/" + name + "/_compact");
+            resp = server.post("/" + name + "/_compact", "");
             if (!resp.isOk())
             {
                 throw new DataAccessException("error getting database status for database " + name +
@@ -210,7 +210,10 @@ public class Database
         }
         finally
         {
-            resp.destroy();
+            if (resp != null)
+            {
+                resp.destroy();
+            }
         }
         
     }

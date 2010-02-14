@@ -42,6 +42,7 @@ public class DatabaseTestCase
         verify(server);
     }
 
+
     @Test
     public void testCompact()
     {
@@ -49,13 +50,20 @@ public class DatabaseTestCase
 
         Database db = new Database(server,"fforw_de");
 
-        expect(server.get(eq("/fforw_de/_compact"))).andReturn(new Response(200,"{\"ok\":true}"));
+        expect(server.post(eq("/fforw_de/_compact"),eq(""))).andReturn(new Response(200,"{\"ok\":true}"));
 
         replay(server);
 
         db.compact();
 
         verify(server);
+    }
+
+    @Test
+    public void realCompact()
+    {
+        Database db = LocalDatabaseTestCase.createDatabaseForTest();
+        db.compact();
     }
 
 
