@@ -238,7 +238,7 @@ public class Database
      */
     public <D> D getDocument(Class<D> cls, String docId)
     {
-        return getDocument(cls,docId,null,null);
+        return getDocumentInternal(cls,docId,null,null, true);
     }
 
     /**
@@ -253,6 +253,28 @@ public class Database
      * @return
      */
     public <D> D getDocument(Class<D> cls, String docId, String revision, JSONParser parser)
+    {      
+        return getDocumentInternal( cls, docId, revision, parser, true);
+    }
+
+    /**
+     * Finds the document with the given id and converts it to the given type or returns 
+     * <code>null</code> if the document is not found. In contrast to 
+     * {@link #getDocumentInternal(Class, String, String, JSONParser, boolean)}, this method 
+     * will not throw an exception when the document is not found.
+     * 
+     * @param <D>       document type
+     * @param cls       document runtime type
+     * @param docId     document id  
+     * @param parser    json parser
+     * @return
+     */
+    public <D> D findDocument(Class<D> cls, String docId, JSONParser parser)
+    {
+        return getDocumentInternal( cls, docId, null, parser, false);
+    }
+
+    private <D> D getDocumentInternal(Class<D> cls, String docId, String revision, JSONParser parser, boolean errorOnNotFound)
     {
         Assert.notNull(cls, "class cannot be null");
         Assert.notNull(docId, "document id cannot be null");
@@ -271,9 +293,17 @@ public class Database
         try
         {
             resp = server.get(uri);
+            
             if (resp.getCode() == 404)
             {
-                throw new NotFoundException("document not found", resp);
+                if (errorOnNotFound)
+                {
+                    throw new NotFoundException("document not found", resp);
+                }
+                else
+                {
+                    return null;
+                }
             }
             else if (!resp.isOk())
             {

@@ -863,6 +863,24 @@ public class LocalDatabaseTestCase
             // ok
         }
     }
+    
+    @Test
+    public void thatFindDocumentWorks()
+    {
+        BaseDocument doc = new BaseDocument();
+        String value = "X0Z:@S-3Poj.+q&STXgO";
+        doc.setProperty("prop", value);
+        
+        Database db = createDatabaseForTest();
+        db.createDocument(doc);
+        
+        
+        BaseDocument doc2 = db.findDocument(BaseDocument.class, doc.getId(), null);
+        assertThat((String)doc2.getProperty("prop"), is(value));
+        
+        BaseDocument doc3 = db.findDocument(BaseDocument.class, "noExistingId", null);
+        assertThat(doc3,is(nullValue()));
+    }
 
     public static Database createRandomNamedDB(String prefix)
     {
