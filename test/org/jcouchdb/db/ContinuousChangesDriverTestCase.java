@@ -1,5 +1,8 @@
 package org.jcouchdb.db;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,16 +38,29 @@ public class ContinuousChangesDriverTestCase
 
 
     @Test
-    public void test()
+    public void test() throws InterruptedException
     {
         TestListener listener = new TestListener();
         db.registerChangeListener(null, null, null, listener);
         
-        db.createDocument( newDoc("foo","123"));
-        db.createDocument( newDoc("bar","456"));
+        BaseDocument foo = newDoc("foo","123");
+        db.createDocument( foo);
+        BaseDocument bar = newDoc("bar","456");
+        db.createDocument( bar);
         
+        Thread.sleep(250);
         
         db.getServer().shutDown();
+        
+        List<ChangeNotification> changeNotifications = listener.getChangeNotifications();
+        assertThat(changeNotifications.size(), is(2));
+        ChangeNotification fooChange = changeNotifications.get(0);
+        assertThat(fooChange.getId(), is(foo.getId()));
+        assertThat(fooChange.getChanges().get(0).getRev(), is(foo.getRevision()));
+
+        ChangeNotification barChange = changeNotifications.get(1);
+        assertThat(barChange.getId(), is(bar.getId()));
+        assertThat(barChange.getChanges().get(0).getRev(), is(bar.getRevision()));
     }
     
     static class TestListener implements ChangeListener

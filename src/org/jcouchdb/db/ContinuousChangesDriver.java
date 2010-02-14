@@ -6,6 +6,7 @@ package org.jcouchdb.db;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.SocketException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.io.IOUtils;
@@ -37,7 +38,7 @@ class ContinuousChangesDriver
     public ContinuousChangesDriver(Database db, String filter, Long since, Options options,
         ChangeListener listener)
     {
-        super("ContinuousChangesDriver" + driverCount.incrementAndGet());
+        super("ContinuousChangesDriver-" + driverCount.incrementAndGet());
 
         this.db = db;
         this.filter = filter;
@@ -66,6 +67,7 @@ class ContinuousChangesDriver
 
         while (!db.getServer().isShutdown())
         {
+            log.debug("driver loop");
             try
             {
                 log.info(
@@ -77,11 +79,10 @@ class ContinuousChangesDriver
                 log.debug("input stream = {}", ir);
 
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                //if (ir.available() > 0)
+                
+                while (!db.getServer().isShutdown())
                 {
-                    log.debug("enter read.");
                     int c = ir.read();
-                    log.debug("exit read.");
                     if (c == -1)
                     {
                         throw new IllegalStateException("Unexpected EOF");
@@ -90,13 +91,17 @@ class ContinuousChangesDriver
                     if (c == '\n')
                     {
                         convertRawData(bos.toByteArray());
+                        bos.reset();
                     }
                     else
                     {
                         bos.write(c);
                     }
                 }
-                Thread.sleep(100);
+            }
+            catch(SocketException e)
+            {
+                log.debug("SocketException listening to continuous changes");
             }
             catch (Exception e)
             {
@@ -126,6 +131,7 @@ class ContinuousChangesDriver
             try
             {
                 String json = new String(byteArray, "UTF-8");
+                log.debug("received notification JSON = {}", json);
                 ChangeNotification changeNotification = JSONParser.defaultJSONParser().parse(ChangeNotification.class, json);
                 listener.onChange(changeNotification);
             }
