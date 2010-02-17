@@ -279,10 +279,7 @@ public class Database
         Assert.notNull(cls, "class cannot be null");
         Assert.notNull(docId, "document id cannot be null");
 
-        if (!docId.startsWith("_design/"))
-        {
-            docId = encodeURL(docId);
-        }
+        docId = encodeURL(docId);
         
         String uri = "/" + name + "/" + (docId);
         if (revision != null)
@@ -668,7 +665,14 @@ public class Database
     {
         try
         {
-            return URLEncoder.encode(s, "UTF-8");
+            if (s.startsWith(DESIGN_DOCUMENT_PREFIX))
+            {
+                return DESIGN_DOCUMENT_PREFIX + URLEncoder.encode(s.substring(DESIGN_DOCUMENT_PREFIX.length()), "UTF-8");
+            }
+            else
+            {            
+                return URLEncoder.encode(s, "UTF-8");
+            }
         }
         catch (UnsupportedEncodingException e)
         {
