@@ -5,11 +5,14 @@ import static org.hamcrest.Matchers.is;
 
 import org.jcouchdb.document.BaseDocument;
 import org.jcouchdb.document.DocumentHelper;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 
 public class DocumentHelperTestCase
 {
+    private static DocumentPropertyHandler documentHelper = new DocumentHelper();
+    
 
     @Test
     public void thatGetIdWorks()
@@ -17,11 +20,11 @@ public class DocumentHelperTestCase
         Bean b = new Bean();
         b.set_id("foo");
 
-        assertThat(DocumentHelper.getId(b), is(("foo")));
+        assertThat(documentHelper.getId(b), is(("foo")));
 
         BaseDocument doc = new BaseDocument();
         doc.setId("foo");
-        assertThat(DocumentHelper.getId(doc), is(("foo")));
+        assertThat(documentHelper.getId(doc), is(("foo")));
     }
 
 
@@ -30,12 +33,12 @@ public class DocumentHelperTestCase
     {
         Bean b = new Bean();
         b.set_id("foo");
-        DocumentHelper.setId(b, "bar");
+        documentHelper.setId(b, "bar");
         assertThat(b.get_id(), is(("bar")));
 
         BaseDocument doc = new BaseDocument();
         doc.setId("foo");
-        DocumentHelper.setId(doc, "bar");
+        documentHelper.setId(doc, "bar");
         assertThat(doc.getId(), is(("bar")));
     }
 
@@ -44,11 +47,11 @@ public class DocumentHelperTestCase
     {
         Bean b = new Bean();
         b.set_rev("foo");
-        assertThat(DocumentHelper.getRevision(b), is(("foo")));
+        assertThat(documentHelper.getRevision(b), is(("foo")));
 
         BaseDocument doc = new BaseDocument();
         doc.setRevision("foo");
-        assertThat(DocumentHelper.getRevision(doc), is(("foo")));
+        assertThat(documentHelper.getRevision(doc), is(("foo")));
     }
 
 
@@ -57,12 +60,12 @@ public class DocumentHelperTestCase
     {
         Bean b = new Bean();
         b.set_rev("foo");
-        DocumentHelper.setRevision(b, "bar");
+        documentHelper.setRevision(b, "bar");
         assertThat(b.get_rev(), is(("bar")));
 
         BaseDocument doc = new BaseDocument();
         doc.setRevision("foo");
-        DocumentHelper.setRevision(doc, "bar");
+        documentHelper.setRevision(doc, "bar");
         assertThat(doc.getRevision(), is(("bar")));
     }
 

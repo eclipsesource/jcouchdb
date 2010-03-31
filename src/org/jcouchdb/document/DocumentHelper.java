@@ -15,13 +15,9 @@ import org.svenson.JSONProperty;
  * @author fforw at gmx dot de
  *
  */
-public class DocumentHelper
+public class DocumentHelper implements DocumentPropertyHandler
 {
-    protected DocumentHelper()
-    {
-    }
-
-    public static String getId(Object document)
+    public String getId(Object document)
     {
         try
         {
@@ -46,7 +42,7 @@ public class DocumentHelper
         }
     }
 
-    public static String getRevision(Object document)
+    public String getRevision(Object document)
     {
         try
         {
@@ -71,7 +67,7 @@ public class DocumentHelper
         }
     }
 
-    public static void setId(Object document, String id)
+    public void setId(Object document, String id)
     {
         try
         {
@@ -99,7 +95,7 @@ public class DocumentHelper
         }
     }
 
-    public static void setRevision(Object document, String revision)
+    public void setRevision(Object document, String revision)
     {
         try
         {
@@ -127,7 +123,7 @@ public class DocumentHelper
         }
     }
 
-    public static String getPropertyNameFromAnnotation(Object target, String value)
+    private String getPropertyNameFromAnnotation(Object target, String value)
     {
         for (PropertyDescriptor pd : PropertyUtils.getPropertyDescriptors(target.getClass()))
         {

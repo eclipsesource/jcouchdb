@@ -206,24 +206,25 @@ public class LocalDatabaseTestCase
 
     }
 
-    @Test
-    public void testGetAllBySeq()
-    {
-        Database db = createDatabaseForTest();
-
-        ViewResult<Map> result = db.listDocumentsByUpdateSequence(null,null);
-
-        List<ValueRow<Map>> rows = result.getRows();
-
-        assertThat(rows.size(), is(4));
-        assertThat(rows.get(0).getKey().toString(), is("1"));
-        assertThat(rows.get(1).getKey().toString(), is("2"));
-        assertThat(rows.get(2).getKey().toString(), is("3"));
-        assertThat(rows.get(3).getKey().toString(), is("5"));   // this one was updated once
-
-        String json = jsonGenerator.forValue(rows);
-        log.debug("rows = " + json);
-    }
+//  removed in 0.11 
+//    @Test
+//    public void testGetAllBySeq()
+//    {
+//        Database db = createDatabaseForTest();
+//
+//        ViewResult<Map> result = db.listDocumentsByUpdateSequence(null,null);
+//
+//        List<ValueRow<Map>> rows = result.getRows();
+//
+//        assertThat(rows.size(), is(4));
+//        assertThat(rows.get(0).getKey().toString(), is("1"));
+//        assertThat(rows.get(1).getKey().toString(), is("2"));
+//        assertThat(rows.get(2).getKey().toString(), is("3"));
+//        assertThat(rows.get(3).getKey().toString(), is("5"));   // this one was updated once
+//
+//        String json = jsonGenerator.forValue(rows);
+//        log.debug("rows = " + json);
+//    }
 
     @Test
     public void testCreateDesignDocument()

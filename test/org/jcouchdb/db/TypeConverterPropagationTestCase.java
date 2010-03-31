@@ -36,7 +36,7 @@ public class TypeConverterPropagationTestCase
         couchdb.setJsonConfig(new JSONConfig(jsonConfig.getJsonGenerator(), jsonParser));
 
         BeanWithDate bean = new BeanWithDate();
-        bean.setDate(new Date());
+        bean.setDate(new Date(0));
      
         couchdb.createDocument(bean);
         
@@ -45,8 +45,8 @@ public class TypeConverterPropagationTestCase
         
         BeanWithDate bean2 = couchdb.getDocument(BeanWithDate.class, bean.getId());
         
-        assertThat(bean.getDate(),is(notNullValue()));
-        log.info("{}", bean.getDate());
+        assertThat(bean2.getDate(),is(notNullValue()));
+        log.info("{}", bean2.getDate());
         
     }
 

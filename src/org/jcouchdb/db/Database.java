@@ -15,6 +15,7 @@ import org.jcouchdb.document.DesignDocument;
 import org.jcouchdb.document.Document;
 import org.jcouchdb.document.DocumentHelper;
 import org.jcouchdb.document.DocumentInfo;
+import org.jcouchdb.document.DocumentPropertyHandler;
 import org.jcouchdb.document.PollingResults;
 import org.jcouchdb.document.ViewAndDocumentsResult;
 import org.jcouchdb.document.ViewResult;
@@ -59,8 +60,6 @@ public class Database
      */
     private static final String ALL_DOCS = "_all_docs";
 
-    private static final String ALL_DOCS_BY_SEQ = "_all_docs_by_seq";
-
 
     private String name;
 
@@ -72,6 +71,13 @@ public class Database
 
     private volatile JSONParser bulkCreateParser;
 
+    private DocumentPropertyHandler documentHelper = new DocumentHelper();
+    
+    public void setDocumentPropertyHandler(DocumentPropertyHandler documentHelper)
+    {
+        this.documentHelper = documentHelper;
+    }
+    
     /**
      * Creates a database object for the given host, the default port and the given data base name.
      *
@@ -333,10 +339,10 @@ public class Database
     {
         Assert.notNull(doc, "document cannot be null");
 
-        if (DocumentHelper.getRevision(doc) != null)
+        if (documentHelper.getRevision(doc) != null)
         {
             throw new IllegalStateException("Newly created docs can't have a revision ( is = " +
-                DocumentHelper.getRevision(doc) + " )");
+                documentHelper.getRevision(doc) + " )");
         }
 
         createOrUpdateDocument(doc);
@@ -369,7 +375,7 @@ public class Database
 
         for (Object doc : documents)
         {
-            boolean isCreate = DocumentHelper.getId(doc) == null;
+            boolean isCreate = documentHelper.getId(doc) == null;
             for (DatabaseEventHandler eventHandler : eventHandlers)
             {
                 try
@@ -399,7 +405,7 @@ public class Database
 
             for (Object doc : documents)
             {
-                boolean isCreate = DocumentHelper.getId(doc) == null;
+                boolean isCreate = documentHelper.getId(doc) == null;
                 for (DatabaseEventHandler eventHandler : eventHandlers)
                 {
                     if (isCreate)
@@ -504,8 +510,8 @@ public class Database
      */
     public void delete(Object document)
     {
-        String id = DocumentHelper.getId(document);
-        String rev = DocumentHelper.getRevision(document);
+        String id = documentHelper.getId(document);
+        String rev = documentHelper.getRevision(document);
         delete(id,rev);
     }
 
@@ -522,7 +528,7 @@ public class Database
         Response resp = null;
         try
         {
-            String id = DocumentHelper.getId(doc);
+            String id = documentHelper.getId(doc);
             boolean isCreate = id == null;
 
             for (DatabaseEventHandler eventHandler : eventHandlers)
@@ -589,9 +595,9 @@ public class Database
 
             if (isCreate)
             {
-                DocumentHelper.setId(doc, info.getId());
+                documentHelper.setId(doc, info.getId());
             }
-            DocumentHelper.setRevision(doc, info.getRevision());
+            documentHelper.setRevision(doc, info.getRevision());
         }
         finally
         {
@@ -611,11 +617,11 @@ public class Database
      */
     public void updateDocument(Object doc)
     {
-        if (DocumentHelper.getId(doc) == null)
+        if (documentHelper.getId(doc) == null)
         {
             throw new IllegalStateException("id must be set for updates");
         }
-        if (DocumentHelper.getRevision(doc) == null)
+        if (documentHelper.getRevision(doc) == null)
         {
             throw new IllegalStateException("revision must be set for updates");
         }
@@ -633,17 +639,6 @@ public class Database
     public ViewResult<Map> listDocuments(Options options, JSONParser parser)
     {
         return (ViewResult<Map>)queryViewInternal(ALL_DOCS, Map.class, null, options, parser, null);
-    }
-
-    /**
-     * Lists all documents in the database in the order they were last updated.
-     * @param options
-     * @param parser
-     * @return
-     */
-    public ViewResult<Map> listDocumentsByUpdateSequence(Options options, JSONParser parser)
-    {
-        return (ViewResult<Map>)queryViewInternal(ALL_DOCS_BY_SEQ, Map.class, null, options, parser, null);
     }
 
     /**
@@ -1166,8 +1161,8 @@ public class Database
         for (Object doc : documents)
         {
             BaseDocument proxy  = new BaseDocument();
-            proxy.setId(DocumentHelper.getId(doc));
-            proxy.setRevision(DocumentHelper.getRevision(doc));
+            proxy.setId(documentHelper.getId(doc));
+            proxy.setRevision(documentHelper.getRevision(doc));
             proxy.setProperty("_deleted", true);
             
             for (DatabaseEventHandler eventHandler : eventHandlers)
