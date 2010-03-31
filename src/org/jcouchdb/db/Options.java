@@ -181,6 +181,11 @@ public class Options
         return putUnencoded("include_docs",includeDocs);
     }
 
+    public Options groupLevel(int level)
+    {
+        return putUnencoded("group_level",level);
+    }
+    
     public String toQuery()
     {
         StringBuilder sb = new StringBuilder();
