@@ -28,7 +28,7 @@ public class ContinuousChangesDriverTestCase
     @BeforeClass
     public static void createDB()
     {
-        db = LocalDatabaseTestCase.recreateDB("continuous-changes");
+        db = LocalDatabaseTestCase.recreateDB("jcouchdb-continuous-changes");
     }
 
 

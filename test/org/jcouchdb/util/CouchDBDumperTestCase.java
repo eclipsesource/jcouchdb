@@ -37,7 +37,7 @@ public class CouchDBDumperTestCase
     public void test() throws IOException
     {
         CouchDBDumper dumper = new CouchDBDumper();
-        dumper.dumpDatabase(server, "markapp_fforw_de", new FileOutputStream(file ), true);
+        dumper.dumpDatabase(server, "test", new FileOutputStream("test/org/jcouchdb/document/test-files/result-assembler-db.zip"), true);
     }
 
     @Test

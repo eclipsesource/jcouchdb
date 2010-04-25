@@ -11,14 +11,16 @@ import org.jcouchdb.db.Database;
 import org.jcouchdb.db.LocalDatabaseTestCase;
 import org.jcouchdb.document.BaseDocument;
 import org.jcouchdb.document.DocumentInfo;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class BulkWriteBugTestCase
 {
     @Test
+    @Ignore
     public void test()
     {
-        Database db = LocalDatabaseTestCase.recreateDB("bulk-bug");
+        Database db = LocalDatabaseTestCase.recreateDB("jcouchdb-bulk-bug");
         
         final int num_docs = 1000;
         List<BaseDocument> documents = new ArrayList<BaseDocument>(num_docs);

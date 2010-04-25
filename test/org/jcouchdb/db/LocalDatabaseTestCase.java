@@ -9,7 +9,6 @@ import static org.hamcrest.Matchers.nullValue;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -20,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
 import org.jcouchdb.document.Attachment;
 import org.jcouchdb.document.BaseDocument;
 import org.jcouchdb.document.DesignDocument;
@@ -38,6 +36,8 @@ import org.jcouchdb.exception.UpdateConflictException;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.JUnitCore;
+import org.junit.runners.JUnit4;
 import org.slf4j.LoggerFactory;
 import org.svenson.JSON;
 import org.svenson.JSONParser;
@@ -83,6 +83,45 @@ public class LocalDatabaseTestCase
     }
 
     @Test
+    public void testInRightOrder() throws IOException
+    {
+        recreateTestDatabase();
+        createTestDocuments();
+        thatMapDocumentsWork();
+        thatCreateNamedDocWorks();
+        thatUpdateDocWorks();
+        thatUpdateConflictWorks();
+        testGetAll();
+        testCreateDesignDocument();
+        queryDocuments();
+        queryViewAndDocuments();
+        queryDocumentsWithComplexKey();
+        thatGetDocumentWorks();
+        thatAdHocViewsWork();
+        thatNonDocumentFetchingWorks();
+        thatBulkCreationWorks();
+        thatBulkCreationWithIdsWorks();
+        thatUpdateConflictsWork();
+        thatDeleteWorks();
+        thatDeleteFailsIfWrong();
+        thatAttachmentHandlingWorks(); 
+        thatViewKeyQueryingFromAllDocsWorks();
+        thatViewKeyQueryingFromAllDocsWorks2();
+        thatViewKeyQueryingWorks();
+        thatViewAndDocumentQueryingWorks();
+        testPureBaseDocumentAccess();
+        testAttachmentStreaming(); 
+        testValidation();
+        thatBulkDeletionWorks();
+        testThatStatsWorks();
+        thatShowsWorks();
+        thatViewsWorks(); 
+        thatDesignDocumentDeletionWorks();
+        thatFindDocumentWorks();
+
+    }
+    
+    
     public void recreateTestDatabase()
     {
         try
@@ -106,7 +145,7 @@ public class LocalDatabaseTestCase
         }
     }
 
-    @Test
+    
     public void createTestDocuments()
     {
         Database db = createDatabaseForTest();
@@ -129,7 +168,7 @@ public class LocalDatabaseTestCase
         log.debug("-- resetted database ----------------------------------");
     }
 
-    @Test
+    
     public void thatMapDocumentsWork()
     {
         Database db = createDatabaseForTest();
@@ -152,7 +191,7 @@ public class LocalDatabaseTestCase
 
     }
 
-    @Test
+    
     public void thatCreateNamedDocWorks()
     {
         FooDocument doc = new FooDocument("qux");
@@ -165,7 +204,7 @@ public class LocalDatabaseTestCase
 
     }
 
-    @Test
+    
     public void thatUpdateDocWorks()
     {
         Database db = createDatabaseForTest();
@@ -181,16 +220,26 @@ public class LocalDatabaseTestCase
     }
 
     
-    @Test(expected = UpdateConflictException.class)
     public void thatUpdateConflictWorks()
     {
+        boolean conflict;
+        try
+        {
         FooDocument doc = new FooDocument("qux");
         doc.setId(MY_FOO_DOC_ID);
 
         createDatabaseForTest().createDocument(doc);
+        conflict = false;
+        }
+        catch(UpdateConflictException e)
+        {
+            conflict = true;
+        }
+        
+        assertThat(conflict, is(true));
     }
 
-    @Test
+    
     public void testGetAll()
     {
         Database db = createDatabaseForTest();
@@ -207,7 +256,7 @@ public class LocalDatabaseTestCase
     }
 
 //  removed in 0.11 
-//    @Test
+//    
 //    public void testGetAllBySeq()
 //    {
 //        Database db = createDatabaseForTest();
@@ -226,7 +275,7 @@ public class LocalDatabaseTestCase
 //        log.debug("rows = " + json);
 //    }
 
-    @Test
+    
     public void testCreateDesignDocument()
     {
         Database db = createDatabaseForTest();
@@ -247,7 +296,7 @@ public class LocalDatabaseTestCase
         assertThat(doc.getProperty("id"), is(nullValue()));
     }
 
-    @Test
+    
     public void queryDocuments()
     {
         Database db = createDatabaseForTest();
@@ -270,7 +319,7 @@ public class LocalDatabaseTestCase
 
     }
 
-    @Test
+    
     public void queryViewAndDocuments()
     {
         Database db = createDatabaseForTest();
@@ -293,7 +342,7 @@ public class LocalDatabaseTestCase
 
     }
 
-    @Test
+    
     public void queryDocumentsWithComplexKey()
     {
         Database db = createDatabaseForTest();
@@ -306,7 +355,7 @@ public class LocalDatabaseTestCase
 
     }
 
-    @Test
+    
     public void thatGetDocumentWorks()
     {
         Database db = createDatabaseForTest();
@@ -319,7 +368,7 @@ public class LocalDatabaseTestCase
 
     }
 
-    @Test
+    
     public void thatAdHocViewsWork()
     {
         Database db = createDatabaseForTest();
@@ -331,7 +380,7 @@ public class LocalDatabaseTestCase
         assertThat((String)doc.getProperty("baz2"), is("Some test value"));
     }
 
-    @Test
+    
     public void thatNonDocumentFetchingWorks()
     {
         Database db = createDatabaseForTest();
@@ -352,7 +401,7 @@ public class LocalDatabaseTestCase
     }
 
 
-    @Test
+    
     public void thatBulkCreationWorks()
     {
         Database db = createDatabaseForTest();
@@ -368,7 +417,7 @@ public class LocalDatabaseTestCase
 
     }
 
-    @Test
+    
     public void thatBulkCreationWithIdsWorks()
     {
         Database db = createDatabaseForTest();
@@ -397,21 +446,31 @@ public class LocalDatabaseTestCase
 
     }
 
-    @Test(expected=UpdateConflictException.class)
     public void thatUpdateConflictsWork()
     {
-        FooDocument foo = new FooDocument("value foo");
-        FooDocument foo2 = new FooDocument("value foo2");
-        foo.setId("update_conflict");
-        foo2.setId("update_conflict");
-
-        Database db = createDatabaseForTest();
-        db.createDocument(foo);
-        db.createDocument(foo2);
+        boolean conflict;
+        try
+        {
+            FooDocument foo = new FooDocument("value foo");
+            FooDocument foo2 = new FooDocument("value foo2");
+            foo.setId("update_conflict");
+            foo2.setId("update_conflict");
+    
+            Database db = createDatabaseForTest();
+            db.createDocument(foo);
+            db.createDocument(foo2);
+            conflict = false;
+        }
+        catch(UpdateConflictException e)
+        {
+            conflict = true;
+        }
+        
+        assertThat(conflict, is(true));
 
     }
 
-    @Test
+    
     public void thatDeleteWorks()
     {
         FooDocument foo = new FooDocument("a document");
@@ -437,11 +496,21 @@ public class LocalDatabaseTestCase
         }
     }
 
-    @Test(expected = DataAccessException.class)
     public void thatDeleteFailsIfWrong()
     {
-        Database db = createDatabaseForTest();
-        db.delete("fakeid", "fakrev");
+        boolean error;
+        try
+        {
+            Database db = createDatabaseForTest();
+            db.delete("fakeid", "fakrev");
+            error = false;
+        }
+        catch(DataAccessException e)
+        {
+            error = true;
+        }
+        
+        assertThat(error,is(true));
     }
 
     private int valueCount(ViewResult<FooDocument> viewResult, String value)
@@ -459,7 +528,7 @@ public class LocalDatabaseTestCase
 
 
 
-    @Test
+    
     public void thatAttachmentHandlingWorks() throws UnsupportedEncodingException
     {
         final String attachmentContent = "The quick brown fox jumps over the lazy dog.";
@@ -516,7 +585,7 @@ public class LocalDatabaseTestCase
     }
 
 
-    @Test
+    
     public void thatViewKeyQueryingFromAllDocsWorks()
     {
         Database db = createDatabaseForTest();
@@ -527,7 +596,7 @@ public class LocalDatabaseTestCase
     }
 
 
-    @Test
+    
     public void thatViewKeyQueryingFromAllDocsWorks2()
     {
         Database db = createDatabaseForTest();
@@ -537,7 +606,7 @@ public class LocalDatabaseTestCase
         assertThat(result.getRows().get(1).getId(), is("second-foo-with-id"));
     }
 
-    @Test
+    
     public void thatViewKeyQueryingWorks()
     {
         Database db = createDatabaseForTest();
@@ -549,7 +618,7 @@ public class LocalDatabaseTestCase
 
     }
 
-    @Test
+    
     public void thatViewAndDocumentQueryingWorks()
     {
         Database db = createDatabaseForTest();
@@ -568,7 +637,7 @@ public class LocalDatabaseTestCase
 
     }
 
-    @Test
+    
     public void testPureBaseDocumentAccess()
     {
         Database db = createDatabaseForTest();
@@ -591,7 +660,7 @@ public class LocalDatabaseTestCase
 
     }
     
-    @Test
+    
     public void testAttachmentStreaming() throws IOException
     {
         Database db = createDatabaseForTest();
@@ -617,7 +686,7 @@ public class LocalDatabaseTestCase
         resp.destroy();
     }
     
-    @Test
+    
     public void testValidation()
     {
         String fn = 
@@ -659,7 +728,7 @@ public class LocalDatabaseTestCase
         assertThat(e.getError(), is("forbidden"));
     }
     
-    @Test
+    
     @Ignore
     public void thatHandlingHugeAttachmentsWorks()
     {
@@ -684,7 +753,7 @@ public class LocalDatabaseTestCase
     }
 
 
-    @Test
+    
     public void thatBulkDeletionWorks()
     {
         Database db = createDatabaseForTest();
@@ -725,7 +794,6 @@ public class LocalDatabaseTestCase
         }
     }
     
-    @Test()
     public void testThatStatsWorks()
     {
         Database db = createDatabaseForTest();
@@ -745,7 +813,7 @@ public class LocalDatabaseTestCase
         }
     }
 
-    @Test
+    
     public void thatShowsWorks()
     {
         DesignDocument doc = new DesignDocument("showDoc");
@@ -759,7 +827,7 @@ public class LocalDatabaseTestCase
         assertThat(content, is("[changed]"));
     }
 
-    @Test
+    
     public void thatViewsWorks() throws FileNotFoundException, IOException
     {
         Database db = createDatabaseForTest();
@@ -845,7 +913,7 @@ public class LocalDatabaseTestCase
         }
     }
     
-    @Test
+    
     public void thatDesignDocumentDeletionWorks()
     {
         Database db = createDatabaseForTest();
@@ -865,7 +933,7 @@ public class LocalDatabaseTestCase
         }
     }
     
-    @Test
+    
     public void thatFindDocumentWorks()
     {
         BaseDocument doc = new BaseDocument();

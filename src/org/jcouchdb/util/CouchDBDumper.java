@@ -38,6 +38,10 @@ public class CouchDBDumper
                 dumpDocumentAndAttachments(zos, database, id, revision, inlineAttachments);
             }
         }
+        catch(Exception e)
+        {
+            log.error("",e);
+        }
         finally
         {
             if (zos != null)
@@ -49,7 +53,7 @@ public class CouchDBDumper
 
     private void dumpDocumentAndAttachments(ZipOutputStream zos, Database database, String id, String revision, boolean inlineAttachments) throws IOException
     {
-        BaseDocument doc = database.getDocument(BaseDocument.class, id.replace("/", "%2F"), revision, null);
+        BaseDocument doc = database.getDocument(BaseDocument.class, id, revision, null);
 
         String path = idToRelPath(id);
 
