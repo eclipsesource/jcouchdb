@@ -84,12 +84,17 @@ public class ServerImpl
     
     public ServerImpl(String host)
     {
-        this(host, DEFAULT_PORT);
+        this(host, DEFAULT_PORT, false);
     }
 
     public ServerImpl(String host, int port)
     {
-        this.serverURI = "http://" + host + ":" + port;
+        this(host, port, false);
+    }
+
+    public ServerImpl(String host, int port, boolean useHTTPS)
+    {
+        this.serverURI = (useHTTPS ? "https://" : "http://") + host + ":" + port;
     }
 
     private DefaultHttpClient getHttpClient()
