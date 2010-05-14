@@ -549,6 +549,10 @@ public class LocalDatabaseTestCase
         assertThat(attachment.getContentType(), is("text/plain"));
         assertThat(attachment.getLength(), is(44l));
 
+        // re-save the document to test that we can save with 'stubs'
+        fooDocument.setProperty("ping", "pong");
+        db.createOrUpdateDocument(fooDocument);
+        
         String content = new String(db.getAttachment(id, "test"));
         assertThat(content, is(attachmentContent));
 
