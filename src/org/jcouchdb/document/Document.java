@@ -8,8 +8,8 @@ import org.svenson.JSONTypeHint;
  * Interface for Documents used with jcouchdb.
  *
  * You don't actually have to implement Document, but your class needs
- * to be able to be fed both "_id" and "_rev" properties -- but without
- * those properties you cannot really work with couchdb anyway.
+ * to be able to be fed both "_id" and "_rev" properties -- without
+ * those properties you cannot work with CouchDB anyway.
  *
  * @author fforw at gmx dot de
  *
