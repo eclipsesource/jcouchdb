@@ -64,7 +64,7 @@ public class ServerImpl
 
     private String serverURI;
 
-    private volatile DefaultHttpClient httpClient;
+    protected volatile DefaultHttpClient httpClient;
 
     private int maxConnectionsPerRoute = 10;
 
@@ -97,7 +97,7 @@ public class ServerImpl
         this.serverURI = (useHTTPS ? "https://" : "http://") + host + ":" + port;
     }
 
-    private DefaultHttpClient getHttpClient()
+    protected DefaultHttpClient getHttpClient()
     {
         if (httpClient == null)
         {

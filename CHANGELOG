@@ -1,6 +1,11 @@
 jcouchdb JSON library change log:
 =================================
 
+Changes from 0.11.0-1 to 1.0.1:
+ * meant to run against the new CouchDB 1.0.1
+ * add https option for ServerImpl
+ * bugfixes
+  
 Changes from 0.10.0-3 to 0.11.0-1:
  * removed old stats API call
  * support for new CouchDB 0.11 feature linked documents via @JSONReference and ResultAssembler
