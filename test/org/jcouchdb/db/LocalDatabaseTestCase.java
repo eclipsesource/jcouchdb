@@ -867,27 +867,70 @@ public class LocalDatabaseTestCase
         
         
         db.createOrUpdateDocument(doc);
-
-        Response response = db.queryList("listDoc/foo", "foos-by-value", new Options().key("changed"));
         
-        JSONParser parser = new JSONParser();
-        parser.addTypeHint(".rows[]", ValueRow.class);
-        
-        response.setParser(parser);
-        String s = response.getContentAsString();
-        System.out.println(s);
-        Map m = parser.parse(Map.class, s);
- 
-        Map head = (Map)m.get("head");
-        assertThat(head, is(notNullValue()));
-        assertThat((Long)head.get("total_rows"), is(10L));
-        assertThat((Long)head.get("offset"), is(2L));
+        Response response = null;
+        try
+        {
+            response = db.queryList("listDoc/foo", "foos-by-value", new Options().key("changed"));
+            
+            JSONParser parser = new JSONParser();
+            parser.addTypeHint(".rows[]", ValueRow.class);
+            
+            response.setParser(parser);
+            String s = response.getContentAsString();
+            System.out.println(s);
+            Map m = parser.parse(Map.class, s);
+     
+            Map head = (Map)m.get("head");
+            assertThat(head, is(notNullValue()));
+            assertThat((Long)head.get("total_rows"), is(10L));
+            assertThat((Long)head.get("offset"), is(2L));
+    
+            List<ValueRow<String>> rows = (List<ValueRow<String>>) m.get("rows");
+            assertThat(rows.size(), is(1));
+            ValueRow<String> row = rows.get(0);
+            assertThat(row.getId(),is(MY_FOO_DOC_ID));
+            assertThat((String)row.getKey(),is("changed"));
+        }
+        finally
+        {
+            if (response != null)
+            {
+                response.destroy();
+            }
+        }
 
-        List<ValueRow<String>> rows = (List<ValueRow<String>>) m.get("rows");
-        assertThat(rows.size(), is(1));
-        ValueRow<String> row = rows.get(0);
-        assertThat(row.getId(),is(MY_FOO_DOC_ID));
-        assertThat((String)row.getKey(),is("changed"));
+        response = null;
+        try
+        {
+            response = db.queryList("listDoc/foo", "foos-by-value", new Options().key("changed"));
+            
+            JSONParser parser = new JSONParser();
+            parser.addTypeHint(".rows[]", ValueRow.class);
+            
+            response.setParser(parser);
+            String s = response.getContentAsString();
+            System.out.println(s);
+            Map m = parser.parse(Map.class, s);
+     
+            Map head = (Map)m.get("head");
+            assertThat(head, is(notNullValue()));
+            assertThat((Long)head.get("total_rows"), is(10L));
+            assertThat((Long)head.get("offset"), is(2L));
+    
+            List<ValueRow<String>> rows = (List<ValueRow<String>>) m.get("rows");
+            assertThat(rows.size(), is(1));
+            ValueRow<String> row = rows.get(0);
+            assertThat(row.getId(),is(MY_FOO_DOC_ID));
+            assertThat((String)row.getKey(),is("changed"));
+        }
+        finally
+        {
+            if (response != null)
+            {
+                response.destroy();
+            }
+        }
         
     }
     

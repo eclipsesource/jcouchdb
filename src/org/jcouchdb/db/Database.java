@@ -1244,6 +1244,35 @@ public class Database
         return server.get(uri);
     }
 
+
+    /**
+     * Queries the specified list function with the specified view and the
+     * specified Keys
+     * 
+     * @param listName Name of list included design doc (e.g.
+     *            "designDocId/listName")
+     * @param viewName view name without design document
+     * @param keys list of keys to apply to the view
+     * @param options query options
+     * @return response
+     */
+    public Response queryListByKeys(String listName, String viewName,
+        List<List<String>> keys, Options options)
+    {
+        String uri = "/" + name + "/" +
+            getDesignURIFromNameAndInfix(listName, LIST_DOCUMENT_INFIX) + "/" + encodeURL(viewName);
+
+        if (options != null)
+        {
+            uri += options.toQuery();
+        }
+        
+        Map<String, List<List<String>>> map = new HashMap<String, List<List<String>>>();
+        map.put("keys", keys);
+        return server.post(uri, jsonGenerator.forValue(map));
+    }
+
+    
     /**
      * Polls the server for changes on the current Database. 
      * @param since         if this is not <code>null</code>, no changes before that sequence number is returned.
