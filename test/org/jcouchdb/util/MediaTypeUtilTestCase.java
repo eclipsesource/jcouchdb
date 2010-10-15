@@ -3,6 +3,8 @@ package org.jcouchdb.util;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+import java.io.File;
+
 import org.junit.Test;
 
 
@@ -19,5 +21,13 @@ public class MediaTypeUtilTestCase
         assertThat(util.getMediaTypeForName("test.html"), is("text/html"));
         assertThat(util.getMediaTypeForName("test.css"), is("text/css"));
         assertThat(util.getMediaTypeForName("test.js"), is("application/x-javascript"));
+    }
+    
+    @Test
+    public void testWithFile()
+    {
+        File upFile = new File("/Users/kanemu/Desktop/tmpimage/2A082_E0100.jpg");
+        MediaTypeUtil mutil = new MediaTypeUtil();
+        assertThat(mutil.getMediaTypeForName(upFile.getName()), is("image/jpeg"));
     }
 }
