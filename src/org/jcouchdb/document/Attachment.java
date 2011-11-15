@@ -2,6 +2,7 @@ package org.jcouchdb.document;
 
 import org.jcouchdb.util.Base64Util;
 import org.svenson.JSONProperty;
+import org.svenson.AbstractDynamicProperties;
 
 /**
  * Represents a couchdb document attachment.
@@ -15,7 +16,7 @@ import org.svenson.JSONProperty;
  * @author fforw at gmx dot de
  *
  */
-public class Attachment
+public class Attachment extends AbstractDynamicProperties
 {
     private String contentType, data;
     private long length;
