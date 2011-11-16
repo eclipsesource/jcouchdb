@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.Credentials;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.jcouchdb.document.Attachment;
 import org.jcouchdb.document.BaseDocument;
 import org.jcouchdb.document.DesignDocument;
@@ -50,6 +53,10 @@ import org.svenson.JSONParser;
 public class LocalDatabaseTestCase
 {
     private JSON jsonGenerator = new JSON();
+    
+    public final static String ADMIN_USER = "username";
+    
+    public final static String ADMIN_PASSWORD = "password";
 
     public final static String COUCHDB_HOST = "localhost";
 
@@ -69,7 +76,7 @@ public class LocalDatabaseTestCase
 
     public static Database createDatabaseForTest()
     {
-        Server server = new ServerImpl(COUCHDB_HOST, COUCHDB_PORT);
+        Server server = createServer();
         List<String> databases = server.listDatabases();
 
         log.debug("databases = " + databases);
@@ -126,7 +133,7 @@ public class LocalDatabaseTestCase
     {
         try
         {
-            Server server = new ServerImpl(COUCHDB_HOST, COUCHDB_PORT);
+            Server server = createServer();
             List<String> databases = server.listDatabases();
 
             log.debug("databases = " + databases);
@@ -1011,7 +1018,11 @@ public class LocalDatabaseTestCase
 
     private static ServerImpl createServer()
     {
-        return new ServerImpl(LocalDatabaseTestCase.COUCHDB_HOST, LocalDatabaseTestCase.COUCHDB_PORT);
+        ServerImpl server = new ServerImpl(LocalDatabaseTestCase.COUCHDB_HOST, LocalDatabaseTestCase.COUCHDB_PORT);
+        Credentials credentials = new UsernamePasswordCredentials(ADMIN_USER, ADMIN_PASSWORD);
+    		AuthScope authScope = new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT, AuthScope.ANY_REALM, AuthScope.ANY_SCHEME);
+    		server.setCredentials(authScope, credentials);
+        return server;
     }
 
     public static Database recreateDB(String name)
